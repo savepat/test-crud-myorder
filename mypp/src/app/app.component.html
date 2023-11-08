@@ -1,0 +1,14 @@
+<p>
+  <mat-toolbar color="primary">
+    <span>My Application</span>
+  </mat-toolbar>
+</p>
+
+<input id="newNotes">
+<button (click)="addNotes()">Add Notes</button>
+
+<div *ngFor="let note of notes">
+  <h3><b>{{ note.description }}</b></h3>
+  <button (click)="deleteNotes(note.id)">Delete Note</button>
+</div>
+
