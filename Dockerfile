@@ -1,34 +1,22 @@
 # Use a base image suitable for your application
-FROM node:14 as frontend
+FROM node:14
 
-# Set the working directory for the frontend
-WORKDIR /app/frontend
+# Set the working directory for the application
+WORKDIR /app
 
-# Copy the frontend application source code
-COPY ./mypp/package.json ./mypp/package-lock.json ./
-COPY ./mypp .
+# Copy both frontend and backend application source code
+COPY ./mypp ./frontend
+COPY ./api ./backend
 
-# Install frontend dependencies
-RUN npm install
+# Install application dependencies
+RUN npm install --prefix frontend
+RUN npm install --prefix backend
 
 # Build the frontend application
-RUN npm run build
-
-# Create a separate image for the backend
-FROM node:14 as backend
-
-# Set the working directory for the backend
-WORKDIR /app/backend
-
-# Copy the backend application source code
-COPY ./api/package.json ./api/package-lock.json ./
-COPY ./api/ .
-
-# Install backend dependencies
-RUN npm install
+RUN npm run build --prefix frontend
 
 # Expose the necessary port for the backend
 EXPOSE 8000
 
 # Start the backend application
-CMD ["npm", "start"]
+CMD ["npm", "start", "--prefix", "backend"]
